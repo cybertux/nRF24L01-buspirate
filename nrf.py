@@ -299,17 +299,21 @@ if __name__ == '__main__':
 	c = 0
 	
 	while 1:
-		bp.setTADDR('serv1')
-		bp.send(str(c)+"test!")
-	
-		print c, bin(bp.getStatus()), bp.isSending()
+		try:
+			bp.setTADDR('serv1')
+			bp.send(str(c)+"test!")
 		
-		if bp.dataReady():
-			print 'received', bp.getData()
-		
-		c = (c+1)%100
-		
-		time.sleep(1)
+			print c, bin(bp.getStatus()), bp.isSending()
+			
+			if bp.dataReady():
+				print 'received', bp.getData()
+			
+			c = (c+1)%100
+			
+			time.sleep(1)
+		except (KeyboardInterrupt, SystemExit):
+			print 'Exiting...'
+			break
 		
 	
 	print 'status', bin(bp.getStatus())
