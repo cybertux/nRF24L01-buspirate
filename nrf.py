@@ -31,7 +31,14 @@ class BP_SPI(object):
 		self._pullup = False
 		self._aux = False
 		self._cs = False
-	
+
+	def reset(self):
+		self.serial.write('\x00\x0f')
+		self.serial.flush()
+		time.sleep(0.1)
+		i = self.serial.read(self.serial.inWaiting())
+		print 'reset ', i
+
 	def setCS(self, val):
 		self.serial.write(chr(0x02 | bool(val)))
 		assert(self.serial.read(1) == chr(1))
@@ -320,5 +327,6 @@ if __name__ == '__main__':
 	
 	time.sleep(0.1)
 	
-	bp.set_outputs(power=False)
-	
+	#bp.set_outputs(power=False)
+	bp.reset()
+
